@@ -291,6 +291,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
+  width: fit-content;
+  
 }
 
 .btn-add {
