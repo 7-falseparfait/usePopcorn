@@ -1,4 +1,8 @@
-export function WatchedMovie({ movie }) {
+export function WatchedMovie({ movie, onDelete }) {
+  function handleDelete() {
+    const movieID = movie.imdbID;
+    onDelete(movieID);
+  }
   return (
     <li>
       <img src={movie.Poster} alt={`${movie.Title} poster`} />
@@ -17,6 +21,9 @@ export function WatchedMovie({ movie }) {
           <span>{movie.runtime} min</span>
         </p>
       </div>
+      <button className="btn-delete" onClick={handleDelete}>
+        X
+      </button>
     </li>
   );
 }

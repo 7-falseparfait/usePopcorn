@@ -36,6 +36,11 @@ export default function App() {
 
   console.log('during render');
   */
+  function handleDeleteMovie(watchedID) {
+    setWatched((watched) =>
+      watched.filter((movie) => movie.imdbID !== watchedID)
+    );
+  }
   function handleSelectMovie(id) {
     setSelectedID((selectedID) => (id === selectedID ? null : id));
   }
@@ -101,13 +106,17 @@ export default function App() {
           {selectedID ? (
             <MovieDetails
               selectedID={selectedID}
+              watched={watched}
               onCloseMovie={handleClose}
               onAddWatched={handleWatched}
             />
           ) : (
             <>
               <WatchedSummary watched={watched} />
-              <WatchedMovieList watched={watched} />
+              <WatchedMovieList
+                watched={watched}
+                onDelete={handleDeleteMovie}
+              />
             </>
           )}
         </Box>

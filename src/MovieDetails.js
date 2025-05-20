@@ -26,10 +26,16 @@ function WatchedBox() {
   );
 }
   */
-export function MovieDetails({ selectedID, onCloseMovie, onAddWatched }) {
+export function MovieDetails({
+  selectedID,
+  onCloseMovie,
+  onAddWatched,
+  watched,
+}) {
   const [movie, setMovie] = useState({});
   const [isLoading, setisLoading] = useState(false);
   const [userRating, setUserRating] = useState(0);
+  const watchedMovie = watched.find((movie) => movie.imdbID === selectedID);
 
   useEffect(
     function () {
@@ -41,7 +47,6 @@ export function MovieDetails({ selectedID, onCloseMovie, onAddWatched }) {
         const data = await res.json();
         setMovie(data);
         setisLoading(false);
-        console.log(data);
       }
       getMoviesDetails();
     },
@@ -58,6 +63,7 @@ export function MovieDetails({ selectedID, onCloseMovie, onAddWatched }) {
       userRating,
     };
     onAddWatched(newWatchedMovie);
+    onCloseMovie();
   }
   return (
     <div className="details">
@@ -85,11 +91,19 @@ export function MovieDetails({ selectedID, onCloseMovie, onAddWatched }) {
           </header>
           <section>
             <div className="rating">
-              <StarRating
-                maxRating={10}
-                size={24}
-                onSetRating={setUserRating}
-              />
+              {watchedMovie ? (
+                <p>
+                  You Rated this movie
+                  <span>⭐</span>
+                  {watchedMovie.userRating}
+                </p>
+              ) : (
+                <StarRating
+                  maxRating={10}
+                  size={24}
+                  onSetRating={setUserRating}
+                />
+              )}
               {userRating > 0 && (
                 <button className="btn-add" onClick={handleAdd}>
                   {" "}
