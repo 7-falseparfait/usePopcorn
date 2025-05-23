@@ -14,7 +14,10 @@ import { WatchedSummary } from "./WatchedSummary";
 
 export const KEY = "f2afef59";
 export default function App() {
-  const [watched, setWatched] = useState([]);
+  const [watched, setWatched] = useState(function () {
+    const saved = localStorage.getItem("watched");
+    return saved ? JSON.parse(saved) : [];
+  });
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errMessage, setErrMessage] = useState("");
@@ -50,6 +53,9 @@ export default function App() {
   function handleWatched(movie) {
     setWatched((watched) => [...watched, movie]);
   }
+  useEffect(() => {
+    localStorage.setItem("watched", JSON.stringify(watched));
+  }, [watched]);
   useEffect(
     function () {
       async function fetchMovies() {
@@ -88,7 +94,11 @@ export default function App() {
       <Navbar>
         {" "}
         <Logo />
-        <Search query={query} setQuery={setQuery} />
+        <Search
+          query={query}
+          setQuery={setQuery}
+          setSelectedID={setSelectedID}
+        />
         <Results movies={movies} />
       </Navbar>
       <Main>
